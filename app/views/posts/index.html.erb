@@ -1,14 +1,33 @@
-<h1> Welcome, <%= current_user.name %> </h1>
-<%= button_to('Logout', destroy_user_session_path, :method => :delete) %>
-<h1>Posts</h1>
+<h1> Members-Only </h2>
+<% if user_signed_in?%>
+  <h1> Welcome, <%= current_user.name %> </h1>
+  <%= button_to('Logout', destroy_user_session_path, :method => :delete) %>
+  
+  <h1>Posts</h1>
+  
+  <div id="posts">
+    <% @posts.each do |post| %>
+     <%= render post%>
+      <p>
+        <%= link_to "Show this post", post %>
+      </p>
+    <% end %>
+  </div>
+  <%= link_to "New post", new_post_path %>
 
-<div id="posts">
-  <% @posts.each do |post| %>
-    <%= render post %>
-    <p>
-      <%= link_to "Show this post", post %>
-    </p>
-  <% end %>
-</div>
+<% else %>
+  <h1> Sign in to view full posts and the authors! <h1>
+  <h1>Posts</h1>
 
-<%= link_to "New post", new_post_path %>
+  <div id="posts">
+    <% @posts.each do |post| %>
+      <p><strong>Title:</strong> <%= post.title %> </p>
+      <p> <strong>Author:</strong> (Login to see) </p>
+    <p>  <strong>Body:</strong> (Login to see) </p>
+      <p>
+      </p>
+    <% end %>
+  </div>
+  <%= link_to "Sign Up", "users/sign_up" %> <br> <br>
+  <%= link_to "Sign In", "users/sign_in" %>
+<% end %>
